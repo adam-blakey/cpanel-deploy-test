@@ -8,3 +8,4 @@ deployment:
     - php artisan >> $LOG 2>&1
     - which composer >> $LOG 2>&1
     - echo done >> $LOG
+    - echo bigwow >> $LOG
