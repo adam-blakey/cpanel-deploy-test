@@ -4,8 +4,11 @@ deployment:
     - export LOG=$HOME/cpanel-deploy-test.log
     - date > $LOG
     - echo "user=$(whoami) home=$HOME pwd=$(pwd)" >> $LOG
-    - which php >> $LOG 2>&1
+    - ls -d /opt/cpanel/ea-php*/root/usr/bin/php /opt/alt/php*/usr/bin/php >> $LOG 2>&1
+    - which php composer node npm >> $LOG 2>&1
+    - node --version >> $LOG 2>&1
+    - composer install --no-dev --no-interaction --no-progress >> $LOG 2>&1 || echo "composer install FAILED" >> $LOG
+    - npm ci --no-audit --no-fund >> $LOG 2>&1 || echo "npm ci FAILED" >> $LOG
     - php artisan >> $LOG 2>&1
-    - which composer >> $LOG 2>&1
+    - node -e "console.log('npm package loaded ok:', require('is-number')(42))" >> $LOG 2>&1 || echo "npm package FAILED" >> $LOG
     - echo done >> $LOG
-    - echo bigwow >> $LOG

@@ -15,3 +15,11 @@ try {
 } catch (Throwable $e) {
     echo 'sqlite FAILED: '.$e->getMessage()."\n";
 }
+
+if (is_file(__DIR__.'/vendor/autoload.php')) {
+    require __DIR__.'/vendor/autoload.php';
+    Webmozart\Assert\Assert::integer(42);
+    echo "composer package loaded ok\n";
+} else {
+    echo "composer package MISSING: vendor/autoload.php not found\n";
+}
