@@ -4,6 +4,7 @@ deployment:
     - export LOG=$HOME/cpanel-deploy-test.log
     - export PATH=/opt/alt/alt-nodejs24/root/usr/bin:$PATH
     - date > $LOG
+    - pwd >> $LOG
     - php -v >> $LOG 2>&1
     - node --version >> $LOG 2>&1
     - composer install --no-dev --no-scripts --no-interaction --no-progress >> $LOG 2>&1 || echo "composer install FAILED" >> $LOG
