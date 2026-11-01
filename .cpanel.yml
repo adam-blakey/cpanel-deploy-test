@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export LOG=$HOME/cpanel-deploy-test.log
+    - date > $LOG
+    - echo "user=$(whoami) home=$HOME pwd=$(pwd)" >> $LOG
+    - which php >> $LOG 2>&1
+    - php artisan >> $LOG 2>&1
+    - which composer >> $LOG 2>&1
+    - echo done >> $LOG

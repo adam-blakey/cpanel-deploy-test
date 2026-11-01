@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+echo 'PHP '.PHP_VERSION.' ('.PHP_SAPI.")\n";
+foreach (['pdo_sqlite', 'mbstring', 'openssl', 'fileinfo'] as $extension) {
+    echo $extension.': '.(extension_loaded($extension) ? 'yes' : 'MISSING')."\n";
+}
+echo 'memory_limit: '.ini_get('memory_limit').', max_execution_time: '.ini_get('max_execution_time')."\n";
+
+try {
+    $db = new PDO('sqlite:'.getenv('HOME').'/cpanel-deploy-test.sqlite');
+    $db->exec('create table if not exists runs (at text)');
+    $db->exec("insert into runs values (datetime('now'))");
+    echo 'sqlite write ok, runs so far: '.$db->query('select count(*) from runs')->fetchColumn()."\n";
+} catch (Throwable $e) {
+    echo 'sqlite FAILED: '.$e->getMessage()."\n";
+}
