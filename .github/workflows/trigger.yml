@@ -11,6 +11,6 @@ jobs:
           REPO: "/home/${{ secrets.CPANEL_USER }}/repositories/cpanel-deploy-test"
         run: |
           curl -sS -H "Authorization: $AUTH" "$API/VersionControl/update?repository_root=$REPO&branch=main" | tee update.json
-          grep -q '"status":1' update.json
+          grep -q '"deployable":1' update.json || { echo '::error::cPanel says the repository is not deployable (invalid .cpanel.yml or uncommitted changes).'; exit 1; }
           curl -sS -H "Authorization: $AUTH" "$API/VersionControlDeployment/create?repository_root=$REPO" | tee deploy.json
-          grep -q '"status":1' deploy.json
+          grep -q '"deploy_id"' deploy.json || { echo '::error::cPanel did not queue a deployment.'; exit 1; }
