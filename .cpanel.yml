@@ -3,12 +3,12 @@ deployment:
   tasks:
     - export LOG=$HOME/cpanel-deploy-test.log
     - date > $LOG
-    - echo "user=$(whoami) home=$HOME pwd=$(pwd)" >> $LOG
-    - ls -d /opt/cpanel/ea-php*/root/usr/bin/php /opt/alt/php*/usr/bin/php >> $LOG 2>&1
-    - which php composer node npm >> $LOG 2>&1
-    - node --version >> $LOG 2>&1
+    - which php composer >> $LOG 2>&1
+    - ls -d /opt/alt/alt-nodejs*/root/usr/bin/node >> $LOG 2>&1 || echo "no CloudLinux Node.js" >> $LOG
+    - export PATH=$(ls -d /opt/alt/alt-nodejs*/root/usr/bin 2>/dev/null | sort -V | tail -1):$PATH
+    - /opt/alt/php84/usr/bin/php -v >> $LOG 2>&1 || echo "php84 FAILED" >> $LOG
     - composer install --no-dev --no-interaction --no-progress >> $LOG 2>&1 || echo "composer install FAILED" >> $LOG
     - npm ci --no-audit --no-fund >> $LOG 2>&1 || echo "npm ci FAILED" >> $LOG
-    - php artisan >> $LOG 2>&1
+    - /opt/alt/php84/usr/bin/php artisan >> $LOG 2>&1 || echo "artisan FAILED" >> $LOG
     - node -e "console.log('npm package loaded ok:', require('is-number')(42))" >> $LOG 2>&1 || echo "npm package FAILED" >> $LOG
     - echo done >> $LOG
